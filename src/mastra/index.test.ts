@@ -6,22 +6,27 @@ test('mastra instance should be created', () => {
   expect(mastra).toBeDefined();
 });
 
-test('weatherAgent should respond to a query in an end-to-end test', async () => {
-  const response = await weatherAgent.streamVNext([
-    {
-      role: 'user',
-      content: "What's the weather in London?",
-    },
-  ]);
+const hasOpenRouterKey = Boolean(process.env.OPENROUTER_API_KEY);
 
-  let responseText = '';
-  // @ts-ignore
-  for await (const chunk of response.textStream) {
-    responseText += chunk;
-  }
+(hasOpenRouterKey ? test : test.skip)(
+  'weatherAgent should respond to a query in an end-to-end test',
+  async () => {
+    const response = await weatherAgent.stream([
+      {
+        role: 'user',
+        content: "What's the weather in London?",
+      },
+    ]);
 
-  console.log('Agent response:', responseText);
+    let responseText = '';
+    for await (const chunk of response.textStream as AsyncIterable<string>) {
+      responseText += chunk;
+    }
 
-  expect(responseText).toBeInstanceOf(String);
-  expect(responseText.length).toBeGreaterThan(0);
-}, 30000); // Increase timeout for e2e test
+    console.log('Agent response:', responseText);
+
+    expect(responseText).toBeInstanceOf(String);
+    expect(responseText.length).toBeGreaterThan(0);
+  },
+  30000,
+); // Increase timeout for e2e test
