@@ -5,12 +5,7 @@ import { weatherTool } from '../tools/weather-tool';
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 
 const apiKey = process.env.OPENROUTER_API_KEY;
-if (!apiKey) {
-  throw new Error(
-    'Missing OPENROUTER_API_KEY. Set it in .env or your environment.'
-  );
-}
-const openrouter = createOpenRouter({ apiKey });
+const openrouter = apiKey ? createOpenRouter({ apiKey }) : null;
 export const weatherAgent = new Agent({
   name: 'Weather Agent',
   instructions: `
@@ -27,7 +22,7 @@ export const weatherAgent = new Agent({
 
       Use the weatherTool to fetch current weather data.
 `,
-  model: openrouter('openai/gpt-4o-mini'),
+  model: (openrouter ? openrouter('openai/gpt-4o-mini') : ((() => ({})) as any)),
   tools: { weatherTool },
   memory: new Memory({
     storage: new LibSQLStore({
