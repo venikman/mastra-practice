@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "mastra dev",
+    "dev": "node --env-file=.env ./node_modules/mastra/dist/index.js dev",
     "build": "mastra build",
-    "start": "mastra start"
+    "start": "node --env-file=.env ./node_modules/mastra/dist/index.js start"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +22,7 @@
     "@mastra/libsql": "^0.14.0",
     "@mastra/loggers": "^0.10.11",
     "@mastra/memory": "^0.14.4",
+    "@openrouter/ai-sdk-provider": "^1.2.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {

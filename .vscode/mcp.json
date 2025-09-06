@@ -1,12 +1,12 @@
 {
-  "servers": {
+  "mcpServers": {
     "mastra": {
       "command": "npx",
       "args": [
         "-y",
         "@mastra/mcp-docs-server"
       ],
-      "type": "stdio"
+      "transport": "stdio"
     }
   }
 }
